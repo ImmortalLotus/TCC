@@ -1,0 +1,15 @@
+﻿################################################################################
+# Este arquivo .gitignore foi criado automaticamente pelo Microsoft(R) Visual Studio.
+################################################################################
+
+/obj
+/bin/Debug
+/src/GLPI/GLPIBot.Api.Web/bin/Debug/net6.0
+/src/GLPI/GLPIBot.Api.Web/obj
+*.user
+/src/GLPI/GLPIBot.GLPI.Domain/bin/Debug/net6.0
+/src/GLPI/GLPIBot.GLPI.Domain/obj
+/bin
+/.vs/**
+/src/GLPI/GLPIBot.Infra/obj
+/src/GLPI/GLPIBot.Infra/bin/Debug/net6.0

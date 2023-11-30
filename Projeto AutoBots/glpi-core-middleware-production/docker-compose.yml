@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  glpibot.api.web:
+    image: ${DOCKER_REGISTRY-}glpibotapiweb
+    env_file:
+        - development.env
+    build:
+      context: .
+      dockerfile: src/GLPI/GLPIBot.Api.Web/Dockerfile

@@ -1,0 +1,93 @@
+include:
+  - project: ci-cd/templates
+    ref: production
+    file:
+      - deploy.okd.yml
+      - "variables.yml"
+
+stages:
+  - deploy
+
+variables:
+## VARIAVEIS PARA SONARQUBE
+  PROJECT_DISPLAY_NAME: "OrcHestrador"
+
+## VARI�VEL ESPECIFICA PARA PROJETO COM M�LTIPLAS SOLU��ES
+  PROJECT_DEPLOY: "multi-deploy"
+
+orchestrador-worker:
+  extends: ['.multi_deploy']
+  variables:
+    PROJECT_SDK: "6.0"
+    PROJECT_NAME: "orchestrador-worker"
+    PROJECT_SOLUTION: "OrcHestrador.WorkerService.sln"
+    PROJECT_DISPLAY_NAME: "OrcHestrador Worker"
+    DOCKERFILE_PATH: "src/OrcHestrador.WorkerService/Dockerfile"
+    DOCKERFILE_CONTEXT: "/"
+    DISABLE_SCALE: "True"
+    ## ROTA EXTRA DEVELOPMENT
+    ROUTER_HOSTNAME_DEVELOPMENT: ""
+    
+    ## ROTA EXTRA STAGING
+    ROUTER_HOSTNAME_STAGING: ""
+
+    ## ROTA EXTRA PRODUCTION
+    ROUTER_HOSTNAME_PRODUCTION: ""
+
+    ## VARIAVEIS DE AMBIENTE DEPLOY
+    DEPLOY_ENVIRONMENT: >
+      "DOTNET_SSL_DIRS=/var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt"
+      "TZ=America/Porto_Velho"
+
+    BUILD_ENVIRONMENT: >
+      "DOTNET_NUGET_SOURCES=https://nuget.okd.local/repository/nuget-group/"
+      "DOTNET_RESTORE_SOURCES=https://nuget.okd.local/repository/nuget-group/"
+      "DOTNET_RESTORE_DISABLE_PARALLEL=True"
+      "DOTNET_INCREMENTAL=True"
+      "DOTNET_VERBOSITY=diag"
+
+    BUILD_ENVIRONMENT_FILE: "${CI_COMMIT_REF_NAME}.env"
+
+orchestrador-api:
+  extends: .multi_deploy
+  variables:
+    PROJECT_SDK: "6.0"
+    PROJECT_SOLUTION: "OrcHestrador.WorkerService.sln"  
+    PROJECT_NAME: "orchestrador-api"
+    PROJECT_DISPLAY_NAME: "OrcHestrador Api"
+    DOCKERFILE_PATH: "src/OrcHestrador.WebApi/Dockerfile"
+    DOCKERFILE_CONTEXT: "/"
+
+    ROUTER_PORT: "8080"
+    ROUTER_PATH: "/"
+    ROUTER_TERMINATION: "reencrypt"
+
+
+    CERTIFICATE_SECRET_NAME: "openshift-tls"
+    CERTIFICATE_MOUNT_PATH: "/var/run/secrets/service-cert"
+
+    ## ROTA EXTRA DEVELOPMENT
+    ROUTER_HOSTNAME_DEVELOPMENT: ""
+    
+    ## ROTA EXTRA STAGING
+    ROUTER_HOSTNAME_STAGING: ""
+
+    ## ROTA EXTRA PRODUCTION
+    ROUTER_HOSTNAME_PRODUCTION: ""
+
+    ## VARIAVEIS DE AMBIENTE DEPLOY
+    DEPLOY_ENVIRONMENT: >
+      "DOTNET_SSL_DIRS=/var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt"
+      "TZ=America/Porto_Velho"
+    
+    BUILD_ENVIRONMENT: >
+      "DOTNET_NUGET_SOURCES=https://nuget.okd.local/repository/nuget-group/"
+      "DOTNET_RESTORE_SOURCES=https://nuget.okd.local/repository/nuget-group/"
+      "DOTNET_RESTORE_DISABLE_PARALLEL=True"
+      "DOTNET_INCREMENTAL=True"
+      "DOTNET_VERBOSITY=diag"
+
+    BUILD_ENVIRONMENT_FILE: "${CI_COMMIT_REF_NAME}.env"
+
+
+

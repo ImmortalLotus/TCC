@@ -1,0 +1,53 @@
+include:
+  - project: ci-cd/templates
+    ref: production
+    file:
+      - "deploy.openshift.yml"
+      - "variables.yml"
+
+stages:
+  - deploy
+
+variables:
+  ## PROJETO
+  PROJECT_SDK: "6.0"
+  PROJECT_NAME: "glpiApi"
+  PROJECT_DISPLAY_NAME: "${PROJECT_NAME}"
+  PROJECT_SOLUTION: "AutoBots.sln"
+
+  ## DOCKER
+  DOCKERFILE_PATH: "src/GLPI/GLPIBot.Api.Web/Dockerfile"
+  DOCKERFILE_CONTEXT: "/"
+
+  ## ROTA
+  ROUTER_PORT: "8080"
+  ROUTER_PATH: "/"
+  ROUTER_TERMINATION: "reencrypt"
+
+  ## CERTIFICADOS
+  CERTIFICATE_SECRET_NAME: "openshift-tls"
+  CERTIFICATE_MOUNT_PATH: "/var/run/secrets/service-cert"
+
+  ## ROTA EXTRA DEVELOPMENT
+  ROUTER_HOSTNAME_DEVELOPMENT: ""
+
+  ROUTER_HOSTNAME_STAGING: >
+    ""
+
+  ROUTER_HOSTNAME_PRODUCTION: >
+    ""
+
+  ## VARIAVEIS DE AMBIENTE DEPLOY
+  DEPLOY_ENVIRONMENT: >
+    "DOTNET_SSL_DIRS=/var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt"
+    "TZ=America/Porto_Velho"
+
+  ## VARIAVEIS DE AMBIENTE BUILD
+  BUILD_ENVIRONMENT: >
+    "DOTNET_NUGET_SOURCES=https://nuget.okd.local/repository/nuget-group/"
+    "DOTNET_RESTORE_SOURCES=https://nuget.okd.local/repository/nuget-group/"
+    "DOTNET_RESTORE_DISABLE_PARALLEL=True"
+    "DOTNET_INCREMENTAL=True"
+    "DOTNET_VERBOSITY=diag"
+
+  BUILD_ENVIRONMENT_FILE: "${CI_COMMIT_REF_NAME}.env"

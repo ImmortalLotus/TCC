@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  orchestrador.webapi:
+    image: ${DOCKER_REGISTRY-}orchestradorwebapi
+    build:
+      context: .
+      dockerfile: src/OrcHestrador.WebApi/Dockerfile
+    env_file:
+        - development.env
+    ports:
+      - 5001:443
+      - 5000:8080
+
+  orchestrador.workerservice:
+    image: ${DOCKER_REGISTRY-}orchestradorworkerservice
+    build:
+      context: .
+      dockerfile: src/OrcHestrador.WorkerService/Dockerfile
+    env_file:
+        - development.env

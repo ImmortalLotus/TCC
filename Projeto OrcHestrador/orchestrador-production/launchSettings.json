@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "composeLaunchAction": "None",
+      "composeLaunchServiceName": "orchestrador.workerservice",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "orchestrador.webapi": "DoNotStart",
+        "orchestrador.workerservice": "StartDebugging"
+      }
+    }
+  }
+}
