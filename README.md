@@ -1,6 +1,6 @@
 # TCC João Telles
 
-Bem vindo ao meu TCC! Dentro de ambos os projetos estão os próprios readmes, e no projeto OrcHestrador também está disponível um guia de integração.
+Bem vindo ao meu TCC! Esse é um fork estático dos repositórios OrcHestrador e glpi-core-middleware(também conhecido como projeto AutoBots), que estão fechados no Gitlab privado da SETIC. Dentro de ambos os projetos estão os próprios readmes, e no projeto OrcHestrador também está disponível um guia de integração.
 
 ## Sobre as variáveis de ambiente.
 
